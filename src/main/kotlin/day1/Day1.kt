@@ -6,12 +6,9 @@ fun main() {
 
     val numbers = File("src/main/kotlin/day1/input.txt").readLines().map(String::toInt)
 
-    var increases = 0
+    val increases = numbers.subList(0, numbers.size - 1)
+        .mapIndexed { index, i -> Pair(i, numbers[index + 1]) }
+        .count { pair -> pair.first < pair.second }
 
-    for (i in 1 until numbers.size) {
-        if (numbers[i] > numbers[i-1]) {
-            increases += 1
-        }
-    }
     println(increases)
 }
