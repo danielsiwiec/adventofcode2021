@@ -5,22 +5,17 @@ import java.io.File
 fun main() {
 
     val lines = File("src/main/kotlin/day3/input.txt").readLines()
-    val counts = mutableMapOf<Int, Int>()
 
-    for (line in lines) {
-        for ((index, digit) in line.withIndex()) {
-            val currentCount = counts.getOrDefault(index, 0)
-            if (digit == '1') {
-                counts[index] = currentCount + 1
-            }
-        }
-    }
+    val counts = lines.map {it.toCharArray().mapIndexed { index, c -> Pair(index, c.digitToInt()) }}
+        .flatMap { it.asSequence() }
+        .groupBy( keySelector = {it.first}, valueTransform = {it.second})
+        .mapValues { (index, values) -> values.sum() }
 
-    val gammaString = counts.toSortedMap().values.map {if (it > lines.size/2) '1' else '0' }
-    val epsilonString = counts.toSortedMap().values.map {if (it < lines.size /2) '1' else '0' }
+    val gammaString = counts.toSortedMap().map { (key, value) -> if (value > lines.size/2) "1" else "0" }.joinToString("")
+    val epsilonString = counts.toSortedMap().map { (key, value) -> if (value < lines.size/2) "1" else "0" }.joinToString("")
 
-    val gamma = Integer.parseInt(gammaString.joinToString(""), 2)
-    val epsilon = Integer.parseInt(epsilonString.joinToString(""), 2)
+    val gamma = Integer.parseInt(gammaString, 2)
+    val epsilon = Integer.parseInt(epsilonString, 2)
 
     println(gamma*epsilon)
 
