@@ -1,4 +1,26 @@
 package day2
 
-class a {
+import java.io.File
+
+fun main() {
+
+    var depth = 0
+    var forward = 0
+
+    val lines = File("src/main/kotlin/day2/input.txt").readLines()
+
+    for (line in lines) {
+        val split = line.split(' ')
+        val value = Integer.parseInt(split[1])
+        if (split[0] == "forward") {
+            forward += value
+        } else if (split[0] == "up") {
+            depth -= value
+        } else if (split[0] == "down") {
+            depth += value
+        }
+    }
+
+    println(forward * depth)
+
 }
